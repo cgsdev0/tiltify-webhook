@@ -6,7 +6,7 @@ import { exec } from "child_process";
 
 const app = express();
 
-const threshold = process.argv[3] || 1;
+const threshold = process.argv[2] || 1;
 
 app.use(
   bodyParser.json({
@@ -29,6 +29,7 @@ const hmacMiddleware = (req: any, res: any, next: any) => {
     !headers["x-tiltify-signature"] ||
     digest !== headers["x-tiltify-signature"]
   ) {
+    console.log("BAD SIG");
     res.status(401).send({ message: "Could not verify the of the request." });
     return;
   }
