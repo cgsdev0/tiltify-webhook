@@ -8,25 +8,21 @@ const app = express();
 app.use(
   bodyParser.json({
     limit: "50mb",
-    verify(req, res, buffer) {
-      if (req.originalUrl.search("webhooks") !== -1) {
-        req.textBody = buffer.toString();
-      }
-    },
   }),
 );
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const hmacMiddleware = (req, res, next) => {
+const hmacMiddleware = (req: any, res: any, next: any) => {
   const headers = req.headers;
-  const body = req.textBody;
+  const body = req.body;
   const digest = crypto
-    .createHmac("sha256", process.env.SIGNING_ID)
+    .createHmac("sha256", process.env.SIGNING_ID!)
     .update(body)
     .digest("base64");
   if (
-    !headers["x-shopify-hmac-sha256"] ||
-    digest !== headers["x-shopify-hmac-sha256"]
+    !headers["x-tiltify-signature"] ||
+    digest !== headers["x-tiltify-signature"]
   ) {
     res.status(401).send({ message: "Could not verify the of the request." });
     return;
@@ -34,8 +30,9 @@ const hmacMiddleware = (req, res, next) => {
   next();
 };
 
-app.get("/webhook", (req, res) => {
-  res.send("This is a test web page!");
+app.get("/webhook", hmacMiddleware, (req, res) => {
+  console.log(req.body);
+  res.send("ok");
 });
 
 app.listen(9417, () => {
