@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const hmacMiddleware = (req: any, res: any, next: any) => {
   const headers = req.headers;
-  const timestamp = req.headers["X-tiltify-timestamp"] || "";
+  const timestamp = req.headers["x-tiltify-timestamp"] || "";
   const body = req.bodyText;
   const payload = `${timestamp}.${body}`;
   const digest = crypto
