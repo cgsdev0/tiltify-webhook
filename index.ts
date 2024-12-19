@@ -8,7 +8,7 @@ const app = express();
 
 const threshold = process.argv[2] || 1;
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.text());
 
 const hmacMiddleware = (req: any, res: any, next: any) => {
   const headers = req.headers;
