@@ -21,6 +21,7 @@ const hmacMiddleware = (req: any, res: any, next: any) => {
   const timestamp = req.headers["x-tiltify-timestamp"] || "";
   const body = req.bodyText;
   const payload = `${timestamp}.${body}`;
+  console.log(payload);
   const digest = crypto
     .createHmac("sha256", process.env.SIGNING_ID!)
     .update(payload)
