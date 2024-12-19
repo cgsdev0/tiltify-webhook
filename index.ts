@@ -15,7 +15,6 @@ const hmacMiddleware = (req: any, res: any, next: any) => {
   const timestamp = req.headers["x-tiltify-timestamp"] || "";
   const body = req.body;
   const payload = `${timestamp}.${body}`;
-  console.log(payload);
   const digest = crypto
     .createHmac("sha256", process.env.SIGNING_ID!)
     .update(payload)
@@ -33,12 +32,12 @@ const hmacMiddleware = (req: any, res: any, next: any) => {
 
 console.log(process.argv);
 app.post("/webhook", hmacMiddleware, (req, res) => {
-  console.log(req.body);
+  const data = JSON.parse(req.body);
   if (
-    req.body?.data?.completed_at &&
-    (req.body?.data?.amount?.value || 0.0) > threshold
+    data?.data?.completed_at &&
+    (data?.data?.amount?.value || 0.0) > threshold
   ) {
-    console.log(req.body);
+    console.log(data);
     setTimeout(() => {
       let yourscript = exec("bash randomfunc", (error, stdout, stderr) => {
         console.log(stdout);
