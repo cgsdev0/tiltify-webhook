@@ -33,7 +33,7 @@ const hmacMiddleware = (req: any, res: any, next: any) => {
   next();
 };
 
-app.get("/webhook", hmacMiddleware, (req, res) => {
+app.post("/webhook", hmacMiddleware, (req, res) => {
   console.log(req.body);
   res.send("ok");
 });
