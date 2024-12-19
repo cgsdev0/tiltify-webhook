@@ -8,18 +8,10 @@ const app = express();
 
 const threshold = process.argv[2] || 1;
 
-app.use(
-  bodyParser.json({
-    limit: "50mb",
-  }),
-);
-
-app.use(bodyParser.urlencoded({ extended: false }));
-
 const hmacMiddleware = (req: any, res: any, next: any) => {
   const headers = req.headers;
   const timestamp = req.headers["x-tiltify-timestamp"] || "";
-  const body = req.bodyText;
+  const body = req.body;
   const payload = `${timestamp}.${body}`;
   console.log(payload);
   const digest = crypto
