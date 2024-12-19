@@ -8,12 +8,12 @@ const app = express();
 
 const threshold = process.argv[2] || 1;
 
-app.use(bodyParser.text());
+app.use(bodyParser.text({ type: "*/*" }));
 
 const hmacMiddleware = (req: any, res: any, next: any) => {
   const headers = req.headers;
   const timestamp = req.headers["x-tiltify-timestamp"] || "";
-  const body = JSON.stringify(req.body);
+  const body = req.body;
   const payload = `${timestamp}.${body}`;
   console.log(payload);
   const digest = crypto
