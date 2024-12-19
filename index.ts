@@ -6,7 +6,7 @@ import { exec } from "child_process";
 
 const app = express();
 
-const threshold = process.argv[2] || 1;
+const threshold = process.argv[3] || 1;
 
 app.use(
   bodyParser.json({
@@ -35,7 +35,9 @@ const hmacMiddleware = (req: any, res: any, next: any) => {
   next();
 };
 
+console.log(process.argv);
 app.post("/webhook", hmacMiddleware, (req, res) => {
+  console.log(req.body);
   if (
     req.body?.data?.completed_at &&
     (req.body?.data?.amount?.value || 0.0) > threshold
