@@ -46,7 +46,7 @@ app.post("/webhook", hmacMiddleware, (req, res) => {
           console.log(`exec error: ${error}`);
         }
       });
-    }, 3000);
+    }, 1000);
   }
   res.send("ok");
 });

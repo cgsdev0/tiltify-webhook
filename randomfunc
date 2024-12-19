@@ -1,0 +1,15 @@
+#!/bin/bash
+
+CMD="$(find ~/servers/jakecreates2/world/datapacks/geiser_test/data/minecraft/function/ -maxdepth 1 -type f \
+	| grep -o '[^/]*$' \
+	| grep -v '_tick' \
+	| cut -d '.' -f1 \
+	| shuf -n1)"
+
+tmux send-keys "playsound minecraft:block.note_block.pling master @a" Enter
+sleep 1
+tmux send-keys "playsound minecraft:block.note_block.pling master @a" Enter
+sleep 1
+tmux send-keys "playsound minecraft:block.note_block.pling master @a" Enter
+sleep 1
+tmux send-keys "function minecraft:$CMD" Enter
