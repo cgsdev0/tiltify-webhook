@@ -39,7 +39,7 @@ app.post("/webhook", hmacMiddleware, (req, res) => {
   ) {
     console.log(data);
     setTimeout(() => {
-      let yourscript = exec("bash randomfunc", (error, stdout, stderr) => {
+      let yourscript = exec("flock /tmp/webhooklock bash -c randomfunc", (error, stdout, stderr) => {
         console.log(stdout);
         console.log(stderr);
         if (error !== null) {
