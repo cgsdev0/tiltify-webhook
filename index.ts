@@ -2,8 +2,11 @@ import express from "express";
 import bodyParser from "body-parser";
 import crypto from "crypto";
 import "dotenv/config";
+import { exec } from "child_process";
 
 const app = express();
+
+const threshold = process.argv[2] || 1;
 
 app.use(
   bodyParser.json({
@@ -17,7 +20,6 @@ const hmacMiddleware = (req: any, res: any, next: any) => {
   const headers = req.headers;
   const timestamp = req.headers["X-tiltify-timestamp"] || "";
   const body = req.bodyText;
-  console.log(req);
   const payload = `${timestamp}.${body}`;
   const digest = crypto
     .createHmac("sha256", process.env.SIGNING_ID!)
@@ -34,7 +36,21 @@ const hmacMiddleware = (req: any, res: any, next: any) => {
 };
 
 app.post("/webhook", hmacMiddleware, (req, res) => {
-  console.log(req.body);
+  if (
+    req.body?.data?.completed_at &&
+    (req.body?.data?.amount?.value || 0.0) > threshold
+  ) {
+    console.log(req.body);
+    setTimeout(() => {
+      let yourscript = exec("bash randomfunc", (error, stdout, stderr) => {
+        console.log(stdout);
+        console.log(stderr);
+        if (error !== null) {
+          console.log(`exec error: ${error}`);
+        }
+      });
+    }, 3000);
+  }
   res.send("ok");
 });
 
