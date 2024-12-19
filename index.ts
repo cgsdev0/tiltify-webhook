@@ -15,7 +15,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const hmacMiddleware = (req: any, res: any, next: any) => {
   const headers = req.headers;
+  const timestamp = req.headers["X-tiltify-timestamp"] || "";
   const body = req.body;
+  const payload = `${timestamp}.${body}`;
   const digest = crypto
     .createHmac("sha256", process.env.SIGNING_ID!)
     .update(body)
