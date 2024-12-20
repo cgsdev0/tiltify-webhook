@@ -33,11 +33,11 @@ const hmacMiddleware = (req: any, res: any, next: any) => {
 console.log(process.argv);
 app.post("/webhook", hmacMiddleware, (req, res) => {
   const data = JSON.parse(req.body);
+	console.log(data);
   if (
-    data?.data?.completed_at &&
     (data?.data?.amount?.value || 0.0) > threshold
   ) {
-    console.log(data);
+  console.log("EXECUTING RANDOM FUNCTION");
     setTimeout(() => {
       let yourscript = exec("flock /tmp/webhooklock bash -c './randomfunc'", (error, stdout, stderr) => {
         console.log(stdout);

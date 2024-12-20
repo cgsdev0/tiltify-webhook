@@ -6,6 +6,8 @@ CMD="$(find ~/servers/jakecreates2/world/datapacks/geiser_test/data/minecraft/fu
 	| cut -d '.' -f1 \
 	| shuf -n1)"
 
+echo "$CMD chosen"
+
 tmux send-keys "playsound minecraft:block.note_block.pling master @a" Enter
 sleep 1
 tmux send-keys "playsound minecraft:block.note_block.pling master @a" Enter
