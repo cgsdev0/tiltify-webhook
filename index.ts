@@ -35,7 +35,7 @@ app.post("/webhook", hmacMiddleware, (req, res) => {
   const data = JSON.parse(req.body);
 	console.log(data);
   if (
-    (data?.data?.amount?.value || 0.0) > threshold
+    (data?.data?.amount?.value || 0.0) >= threshold
   ) {
   console.log("EXECUTING RANDOM FUNCTION");
     setTimeout(() => {
